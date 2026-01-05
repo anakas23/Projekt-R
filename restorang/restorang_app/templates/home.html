@@ -6,6 +6,18 @@
     <title>Document</title>
 </head>
 <body>
-    <p>ispis test</p>
+
+     <form method="post">
+        {% csrf_token %}
+        <select name="select-type">
+        <option value="option1">Search for item</option>
+        <option value="option2">Search for restaurant</option>
+    </select>
+        <input type="string" name="select-arg" placeholder="Enter argument" required>
+        <button type="submit">Select</button>
+    </form>
+    {% if result is not None %}
+        <h3>Result: {{ result }}</h3>
+    {% endif %}
 </body>
 </html>
