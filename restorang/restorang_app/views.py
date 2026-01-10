@@ -18,8 +18,17 @@ def multiply_numbers(request):
         try:
             if select_type == "option1":
                 response = supabase.table('item').select('*').ilike('name', "%"+select_arg+"%").execute()
-            else:
+            elif select_type == "option2":
                 response = supabase.table('restaurant').select('*').ilike('name', "%"+select_arg+"%").execute()
+            else: 
+                response = supabase.table("price").insert({
+                    "price_id": request.POST.get('insert-id'),
+                    "date": request.POST.get('insert-date'),
+                    "value": request.POST.get('insert-value'),
+                    "source": request.POST.get('insert-source'),
+                    "item_id": request.POST.get('item-id'),
+                    "rest_id": request.POST.get('rest-id'),
+                }).execute()
             if response.data:
                     for row in response.data:
                         strow = str(row)
@@ -31,3 +40,4 @@ def multiply_numbers(request):
     return render(request,'home.html', {'result': result})
 
     
+
