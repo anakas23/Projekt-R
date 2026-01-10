@@ -12,8 +12,15 @@
         <select name="select-type">
         <option value="option1">Search for item</option>
         <option value="option2">Search for restaurant</option>
+        <option value="option3">input into price (ne stavljaj u prvi input nista)</option>
     </select>
-        <input type="string" name="select-arg" placeholder="Enter argument" required>
+         <input type="string" name="select-arg" placeholder="Enter argument">
+        <input type="string" name="insert-id" placeholder="id">
+        <input type="string" name="insert-date" placeholder="date">
+        <input type="string" name="insert-value" placeholder="value">
+        <input type="string" name="insert-source" placeholder="source">
+        <input type="string" name="item-id" placeholder="item id">
+        <input type="string" name="rest-id" placeholder="restoran id">
         <button type="submit">Select</button>
     </form>
     {% if result is not None %}
@@ -21,3 +28,4 @@
     {% endif %}
 </body>
 </html>
+
