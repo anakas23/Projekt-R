@@ -1,7 +1,7 @@
 db.sqlite3
+*.DS_Store
 myworld/
 /restorang/.env
-*.DS_Store
 *.pyc
 __pycache__/
 venv/
