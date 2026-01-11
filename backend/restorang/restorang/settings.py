@@ -3,6 +3,7 @@ from supabase import create_client, Client
 from dotenv import load_dotenv
 import environ
 import os
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -75,10 +76,21 @@ WSGI_APPLICATION = 'restorang.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': '', #database password
+        'HOST': 'db.bevsrxknttcnkbflpjco.supabase.co',
+        'PORT': '5432',
     }
 }
 
