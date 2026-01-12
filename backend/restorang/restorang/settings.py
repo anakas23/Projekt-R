@@ -12,6 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
+bdPass = os.environ.get("DATABASE_PASSWORD")
+dbHost = os.environ.get("DATABASE_HOST")
+dbUser = os.environ.get("DATABASE_USER")
 
 supabase: Client = create_client(
     os.environ.get("SUPABASE_URL"),
@@ -76,21 +79,19 @@ WSGI_APPLICATION = 'restorang.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': '', #database password
-        'HOST': 'db.bevsrxknttcnkbflpjco.supabase.co',
-        'PORT': '5432',
+        'USER': dbUser, 
+        'PASSWORD': bdPass,
+        'HOST': dbHost, 
+        'PORT': '6543', 
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
+        'CONN_MAX_AGE': 0,
     }
 }
 

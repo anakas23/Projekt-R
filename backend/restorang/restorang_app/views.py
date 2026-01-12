@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from restorang import settings
+from . import helpers
 
 supabase = settings.supabase
 
@@ -68,3 +69,22 @@ def promjena_cijene(request):
         except Exception as e:
             print("Error inserting data:", e)
     return render(request,'pom.html')
+
+
+def restIdByName(request):
+    context = None
+    if request.method == 'POST':
+        select_name = request.POST.get('select-name')
+        try:
+            response = supabase.table('restaurant').select('rest_id').ilike('name', "%"+select_name+"%").execute()                    
+            if response.data:
+                print(response.data)
+                context = {
+                    "items": response.data or [],
+                    "error": None
+                }
+            if not response.data:
+                context["error"] = "No matches found for your search."
+        except Exception as e:
+            print("Error fetching data:", e)
+    return render(request,'restid.html', context)
