@@ -1,3 +1,4 @@
+#za 1 restoran cijene
 import requests
 import json
 
@@ -23,6 +24,6 @@ if response.status_code == 200:
                 name = item.get("name")
                 price_cents = item.get("price")  # cijena u centima (npr. 1030 = 10.30 kn)
                 price = price_cents / 100 if price_cents else None
-                print(f"{name}: {price} HRK")
+                print(f"{name}: {price} eur")
 else:
     print(f"Greška prilikom dohvaćanja: {response.status_code}")

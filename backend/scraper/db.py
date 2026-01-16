@@ -3,7 +3,7 @@ import os
 from supabase import create_client
 from pathlib import Path
 
-# Explicitno učitavanje .env iz foldera gdje je ovaj file
+#  ucitaj .env iz foldera di je ovaj file
 env_path = Path(__file__).parent / ".env"
 load_dotenv(dotenv_path=env_path)
 

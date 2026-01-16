@@ -1,3 +1,4 @@
+#test wolt client
 import requests
 from wolt_queries import MENU_QUERY
 

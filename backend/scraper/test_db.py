@@ -1,4 +1,4 @@
-# test_db.py
+# testiranje db konekcije
 from dotenv import load_dotenv
 import os
 from supabase import create_client
