@@ -1,9 +1,9 @@
 from django.db import models
 
 class Price(models.Model):
-    price_id = models.UUIDField(primary_key=True)
+    price_id = models.IntegerField(primary_key=True)
     date = models.DateField()
-    value = models.CharField(max_length=100)
+    value = models.DecimalField(max_digits=10, decimal_places=2)
     source = models.CharField(max_length=255)
     item_id = models.ForeignKey(
         "Item",
@@ -26,9 +26,12 @@ class Price(models.Model):
     class Meta:
         managed = False 
         db_table = "price"
+    
+    def __str__(self):
+        return f"{self.item_id.name} - {self.value}"
         
 class Item(models.Model):
-    item_id = models.UUIDField(primary_key=True)
+    item_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=100)
     category_id = models.ForeignKey(
@@ -39,19 +42,24 @@ class Item(models.Model):
     class Meta:
         managed = False
         db_table = "item"
+    def __str__(self):
+        return self.name
 
 class Restaurant(models.Model):
-    rest_id = models.UUIDField(primary_key=True)
+    rest_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     type = models.CharField(max_length=100)
     location = models.CharField(max_length=255)
     class Meta:
         managed = False
         db_table = "restaurant"
+    def __str__(self):
+        return self.name
         
 
 class User(models.Model):
-    user_id = models.UUIDField(primary_key=True)
+    
+    user_id = models.IntegerField(primary_key=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
@@ -59,17 +67,21 @@ class User(models.Model):
     role = models.CharField(max_length=255)
     class Meta:
         managed = False
-        db_table = "user"
+        db_table = "users"
+    def __str__(self):
+        return self.first_name + " " + self.last_name
         
 class Category(models.Model):
-    category_id = models.UUIDField(primary_key=True)
+    category_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=255)
     class Meta:
         managed = False
         db_table = "category"
+    def __str__(self):
+        return self.name
         
 class PriceReport(models.Model):
-    report_id = models.UUIDField(primary_key=True)
+    report_id = models.IntegerField(primary_key=True)
     status = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     report_date = models.DateField()
@@ -94,5 +106,7 @@ class PriceReport(models.Model):
     class Meta:
         managed = False 
         db_table = "pricereport"
+    def __str__(self):
+        return self.item_id.name + " - " + str(self.price)
 
     
