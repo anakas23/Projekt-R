@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Price History</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .search-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            padding: 12px 30px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #764ba2;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error {
+            background-color: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            color: #667eea;
+            display: none;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .price-history {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .price-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 5px solid #667eea;
+        }
+
+        .price-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .price-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .price-date {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .price-source {
+            color: #999;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .price-id {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            color: #999;
+            font-size: 12px;
+            text-align: right;
+        }
+
+        .no-prices {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+            font-size: 16px;
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            border: 1px solid #dde7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .info-box strong {
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Item Price History</h1>
+
+        <div class="search-section">
+            <input 
+                type="number" 
+                id="itemId" 
+                placeholder="Enter Item ID"
+                min="1"
+            >
+            <button onclick="fetchPriceHistory()">Search</button>
+        </div>
+
+        <div class="error" id="errorMessage"></div>
+        <div class="loading" id="loading">Loading price history...</div>
+        <div id="historyContainer"></div>
+    </div>
+
+    <script>
+        // Allow Enter key to trigger search
+        document.getElementById('itemId').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                fetchPriceHistory();
+            }
+        });
+
+        function fetchPriceHistory() {
+            const itemId = document.getElementById('itemId').value.trim();
+            const errorDiv = document.getElementById('errorMessage');
+            const loadingDiv = document.getElementById('loading');
+            const historyContainer = document.getElementById('historyContainer');
+
+            // Clear previous results
+            errorDiv.classList.remove('show');
+            errorDiv.textContent = '';
+            historyContainer.innerHTML = '';
+
+            // Validate input
+            if (!itemId) {
+                errorDiv.textContent = 'Please enter an Item ID';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            // Show loading
+            loadingDiv.classList.add('show');
+
+            // Fetch data
+            fetch(`/home/item-price-history/?item_id=${itemId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    loadingDiv.classList.remove('show');
+
+                    if (data.error) {
+                        errorDiv.textContent = data.error;
+                        errorDiv.classList.add('show');
+                        return;
+                    }
+
+                    if (!data.prices || data.prices.length === 0) {
+                        historyContainer.innerHTML = '<div class="no-prices">No price history found for this item</div>';
+                        return;
+                    }
+
+                    // Display info box
+                    const infoBox = document.createElement('div');
+                    infoBox.className = 'info-box';
+                    infoBox.innerHTML = `<strong>Item ID:</strong> ${escapeHtml(itemId)} | <strong>Total Records:</strong> ${data.prices.length}`;
+                    historyContainer.appendChild(infoBox);
+
+                    // Display prices
+                    const priceHistory = document.createElement('div');
+                    priceHistory.className = 'price-history';
+
+                    data.prices.forEach((price, index) => {
+                        const priceItem = document.createElement('div');
+                        priceItem.className = 'price-item';
+
+                        const dateObj = new Date(price.date);
+                        const formattedDate = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                        priceItem.innerHTML = `
+                            <div class="price-info">
+                                <div class="price-value">$${parseFloat(price.value).toFixed(2)}</div>
+                                <div class="price-date">${formattedDate}</div>
+                                ${price.source ? `<div class="price-source">Source: ${escapeHtml(price.source)}</div>` : ''}
+                            </div>
+                            <div class="price-id">#${index + 1}</div>
+                        `;
+
+                        priceHistory.appendChild(priceItem);
+                    });
+
+                    historyContainer.appendChild(priceHistory);
+                })
+                .catch(error => {
+                    loadingDiv.classList.remove('show');
+                    errorDiv.textContent = `Error fetching price history: ${error.message}`;
+                    errorDiv.classList.add('show');
+                    console.error('Error:', error);
+                });
+        }
+
+        // Helper function to escape HTML special characters
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

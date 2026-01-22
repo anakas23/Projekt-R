@@ -16,5 +16,6 @@ def priceByItemIdAndRestId(item_id, rest_id):
 
     
 def updatePrice(price_id, new_value):
+    
     response = supabase.table('price').update({'value': new_value}).eq('price_id', price_id).execute()
     return response

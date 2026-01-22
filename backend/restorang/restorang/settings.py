@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import environ
 import os
 import dj_database_url
+import psycopg2
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -79,22 +80,27 @@ WSGI_APPLICATION = 'restorang.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': dbUser, 
-        'PASSWORD': bdPass,
-        'HOST': dbHost, 
-        'PORT': '6543', 
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
-        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': dbUser, 
+#         'PASSWORD': bdPass,
+#         'HOST': dbHost, 
+#         'PORT': '6543', 
+#         'OPTIONS': {
+#             'sslmode': 'require',
+#         },
+#         'CONN_MAX_AGE': 0,
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

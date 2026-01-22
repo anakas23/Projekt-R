@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render
 from restorang import settings
 from . import helpers
@@ -54,24 +55,27 @@ def multiply_numbers(request):
 
     
 
-def promjena_cijene(request):
-    if request.method == 'POST':
-        try:
-            supabase.table("pricereport").insert({
-                "report_id": request.POST.get('report_id'),
-                "status": request.POST.get('status'),
-                "price": request.POST.get('price'),
-                "report_date": request.POST.get('report_date'),
-                "item_id": request.POST.get('item_id'),
-                "rest_id": request.POST.get('rest_id'),
-                "user_id": request.POST.get('user_id')
-            }).execute()
-        except Exception as e:
-            print("Error inserting data:", e)
-    return render(request,'pom.html')
 
 
-def restIdByName(request):
+
+
+def fetch_all_restaurants(request):
+    context = None
+    try:
+        response = supabase.table('restaurant').select('*').execute()                    
+        if response.data:
+            print(response.data)
+            context = {
+                "items": response.data or [],
+                "error": None
+            }
+        if not response.data:
+            context["error"] = "No matches found for your search."
+    except Exception as e:
+        print("Error fetching data:", e)
+    return JsonResponse(context)
+
+def get_rest_id_by_name(request):
     context = None
     if request.method == 'POST':
         select_name = request.POST.get('select-name')
@@ -87,4 +91,140 @@ def restIdByName(request):
                 context["error"] = "No matches found for your search."
         except Exception as e:
             print("Error fetching data:", e)
-    return render(request,'restid.html', context)
+    return JsonResponse(context)
+
+def get_restaurant_by_id(request):
+    context = None
+    if request.method == 'POST':
+        rest_id = request.POST.get('rest_id')
+        try:
+            response = supabase.table('restaurant').select('*').eq('rest_id', rest_id).execute()
+            if response.data:
+                print(response.data)
+                context = {
+                    "items": response.data or [],
+                    "error": None
+                }
+            if not response.data:
+                context["error"] = "No matches found for your search."
+        except Exception as e:
+            print("Error fetching data:", e)
+    return JsonResponse(context)
+
+def fetch_all_restaurants_by_type(request):
+    context = None
+    try:
+        restaurant_type = request.GET.get('type') or request.POST.get('type')
+        
+        if not restaurant_type:
+            return JsonResponse({
+                "restaurants": [],
+                "error": "Restaurant type is required"
+            })
+        
+        response = supabase.table('restaurant').select('*').ilike('type', "%"+restaurant_type+"%").execute()                    
+        
+        if response.data:
+            context = {
+                "restaurants": response.data or [],
+                "error": None
+            }
+        else:
+            context = {
+                "restaurants": [],
+                "error": "No restaurants found of this type"
+            }
+    except Exception as e:
+        print("Error fetching data:", e)
+        context = {
+            "restaurants": [],
+            "error": f"Error fetching data: {str(e)}"
+        }
+    
+    return JsonResponse(context)
+
+def get_menu_by_rest_id(request):
+    context = None
+    try:
+        restaurant_id = request.GET.get('rest_id') or request.POST.get('rest_id')
+        
+        if not restaurant_id:
+            return JsonResponse({
+                "items": [],
+                "error": "Restaurant ID is required"
+            })
+        
+        # Fetch all items for the restaurant
+        items_response = supabase.table('item').select('*').eq('rest_id', restaurant_id).execute()
+        
+        if items_response.data:
+            # For each item, fetch its prices
+            items_with_prices = []
+            for item in items_response.data:
+                prices_response = supabase.table('price').select('*').eq('item_id', item['item_id']).execute()
+                
+                item_data = {
+                    **item,
+                    "prices": prices_response.data or []
+                }
+                items_with_prices.append(item_data)
+            
+            context = {
+                "items": items_with_prices,
+                "error": None
+            }
+        else:
+            context = {
+                "items": [],
+                "error": "No items found for this restaurant"
+            }
+    except Exception as e:
+        print("Error fetching data:", e)
+        context = {
+            "items": [],
+            "error": f"Error fetching data: {str(e)}"
+        }
+    
+    return JsonResponse(context)
+
+def get_item_price_history(request):
+    context = None
+    try:
+        # Get item_id from request
+        item_id = request.GET.get('item_id') or request.POST.get('item_id')
+        
+        if not item_id:
+            return JsonResponse({
+                "prices": [],
+                "error": "Item ID is required"
+            })
+        
+        # Fetch all prices for the item, ordered by date descending
+        prices_response = supabase.table('price').select('*').eq('item_id', item_id).order('date', desc=True).execute()
+        
+        if prices_response.data:
+            context = {
+                "prices": prices_response.data or [],
+                "error": None
+            }
+        else:
+            context = {
+                "prices": [],
+                "error": "No price history found for this item"
+            }
+    except Exception as e:
+        print("Error fetching data:", e)
+        context = {
+            "prices": [],
+            "error": f"Error fetching data: {str(e)}"
+        }
+    
+    return JsonResponse(context)
+
+
+# just for displaying html pages for testing
+def item_price_history(request):
+    return render(request, 'item_price_history.html')
+
+def items_by_restaurant(request):
+    return render(request, 'items_by_restaurant.html')
