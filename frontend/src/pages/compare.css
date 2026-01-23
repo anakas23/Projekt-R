@@ -1,0 +1,151 @@
+.compare-page {
+  padding: 32px;
+  background: #f8fbff;
+  min-height: calc(100vh - 70px);
+}
+
+.compare-header h1 { margin: 0; font-size: 44px; }
+.compare-header p { margin-top: 10px; color: #555; }
+
+.compare-controls {
+  margin-top: 22px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+}
+
+.controls-top {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  gap: 18px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.field select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.segmented { display: flex; gap: 10px; }
+
+.seg {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #f3f4f6;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.seg.active { background: #2563eb; color: white; border-color: #2563eb; }
+
+.controls-bottom { margin-top: 18px; }
+
+.section-label {
+  display: block;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.restaurant-picks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pick {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  cursor: pointer;
+  font-weight: 700;
+  color: #111827;
+}
+
+.pick.active {
+  border-color: #2563eb;
+  background: #eef4ff;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.chart-card {
+  margin-top: 18px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+.chart-title {
+  padding: 18px;
+  border-bottom: 1px solid #eee;
+}
+
+.chart-title h2 { margin: 0; }
+.chart-title p { margin: 6px 0 0; color: #6b7280; }
+
+.chart-area { padding: 18px; height: 360px; }
+
+.latest-card {
+  margin-top: 18px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+  padding: 18px;
+}
+
+.latest-card h2 { margin: 0 0 14px; }
+
+.latest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.latest-box {
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 16px;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  border-left: 4px solid #3b82f6;
+}
+
+.latest-box.green { border-left-color: #10b981; }
+.latest-box.red { border-left-color: #ef4444; }
+
+.latest-name { font-weight: 800; color: #111827; }
+.latest-price { margin-top: 6px; font-size: 26px; font-weight: 900; }
+.latest-date { margin-top: 6px; color: #6b7280; }
+
+@media (max-width: 1000px) {
+  .controls-top { grid-template-columns: 1fr; }
+  .restaurant-picks { grid-template-columns: 1fr; }
+  .latest-grid { grid-template-columns: 1fr; }
+}
