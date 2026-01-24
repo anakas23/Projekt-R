@@ -1,0 +1,31 @@
+.feature-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef4ff;
+  color: #2563eb;
+  font-size: 20px;
+  margin-bottom: 14px;
+}
+
+.feature-card h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.feature-card p {
+  margin: 0;
+  color: #555;
+  line-height: 1.45;
+}
