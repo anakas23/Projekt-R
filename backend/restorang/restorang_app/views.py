@@ -56,9 +56,6 @@ def multiply_numbers(request):
     
 
 
-
-
-
 def fetch_all_restaurants(request):
     context = None
     try:
@@ -143,8 +140,65 @@ def fetch_all_restaurants_by_type(request):
     
     return JsonResponse(context)
 
+def fetch_all_restaurant_types(request):
+    context = None
+    try:
+        response = supabase.table('restaurant').select('type', count='distinct').execute()                    
+        
+        if response.data:
+            context = {
+                "types": [item['type'] for item in response.data] or [],
+                "error": None
+            }
+        else:
+            context = {
+                "types": [],
+                "error": "No restaurant types found"
+            }
+    except Exception as e:
+        print("Error fetching data:", e)
+        context = {
+            "types": [],
+            "error": f"Error fetching data: {str(e)}"
+        }
+    
+    return JsonResponse(context)
+
+def fetch_all_restaurants_by_quarter(request):
+    context = None
+    try:
+        quarter = request.GET.get('quarter') or request.POST.get('quarter')
+        
+        if not quarter:
+            return JsonResponse({
+                "restaurants": [],
+                "error": "Quarter is required"
+            })
+        
+        response = supabase.table('restaurant').select('*').ilike('quarter', "%"+quarter+"%").execute()                    
+        
+        if response.data:
+            context = {
+                "restaurants": response.data or [],
+                "error": None
+            }
+        else:
+            context = {
+                "restaurants": [],
+                "error": "No restaurants found in this quarter"
+            }
+    except Exception as e:
+        print("Error fetching data:", e)
+        context = {
+            "restaurants": [],
+            "error": f"Error fetching data: {str(e)}"
+        }
+    
+    return JsonResponse(context)
+
 def get_menu_by_rest_id(request):
     context = None
+    print("helasdfasadsfsdf")
     try:
         restaurant_id = request.GET.get('rest_id') or request.POST.get('rest_id')
         
@@ -161,11 +215,13 @@ def get_menu_by_rest_id(request):
             # For each item, fetch its prices
             items_with_prices = []
             for item in items_response.data:
+                category_response = supabase.table('category').select('name').eq('category_id', item['category_id']).execute()
                 prices_response = supabase.table('price').select('*').eq('item_id', item['item_id']).execute()
                 
                 item_data = {
                     **item,
-                    "prices": prices_response.data or []
+                    "prices": prices_response.data or [],
+                    "category_name": category_response.data[0]['name'] if category_response.data else None
                 }
                 items_with_prices.append(item_data)
             
