@@ -373,10 +373,10 @@ def upsert_prices_bulk(price_rows):
     if not price_rows:
         return
     supabase.table("price").upsert(
-        price_rows,
-        on_conflict="rest_id,item_id,date,source",
-        ignore_duplicates=True
-    ).execute()
+    price_rows,
+    on_conflict="rest_id,item_id,value",
+    ignore_duplicates=True
+).execute()
 
 
 # -------------------------
