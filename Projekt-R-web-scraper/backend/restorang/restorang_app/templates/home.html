@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+     <form method="post">
+        {% csrf_token %}
+        <select name="select-type">
+        <option value="option1">Search for item</option>
+        <option value="option2">Search for restaurant</option>
+        <option value="option3">input into price (ne stavljaj u prvi input nista)</option>
+    </select>
+         <input type="string" name="select-arg" placeholder="Enter argument">
+        <input type="string" name="insert-id" placeholder="id">
+        <input type="string" name="insert-date" placeholder="date">
+        <input type="string" name="insert-value" placeholder="value">
+        <input type="string" name="insert-source" placeholder="source">
+        <input type="string" name="item-id" placeholder="item id">
+        <input type="string" name="rest-id" placeholder="restoran id">
+        <button type="submit">Select</button>
+    </form>
+    {% for item in items %}
+    <li>
+        <strong>{{ item.name }}</strong> — €{{ item.price }} 
+    </li>
+{% endfor %}
+</body>
+</html>
+
+

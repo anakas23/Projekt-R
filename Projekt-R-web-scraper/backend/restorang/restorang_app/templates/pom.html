@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+     <form method="post">
+        {% csrf_token %}
+        <input type="string" name="report_id" placeholder="report_id">
+        <input type="string" name="status" placeholder="status">
+        <input type="string" name="price" placeholder="price">
+        <input type="string" name="report_date" placeholder="report_date">
+        <input type="string" name="item_id" placeholder="item id">
+        <input type="string" name="rest_id" placeholder="restoran id">
+        <input type="string" name="user_id" placeholder="user id">
+        
+        <button type="submit">Select</button>
+    </form>
+    {% for item in items %}
+    <li>
+        <strong>{{ item.name }}</strong> — €{{ item.price }} 
+    </li>
+{% endfor %}
+</body>
+</html>
+
+

@@ -1,0 +1,385 @@
+/* ============================================================
+   RESTORANG — CSS Design System
+   ============================================================
+   Ideja:
+   - Držimo sve boje/spacing u CSS varijablama (:root)
+   - Komponente su imenovane rs-*
+   - Dizajn: “clean panel”, plavi tekst, pastel glows, rounded corners
+*/
+
+:root{
+  --bg: #ffffff;
+  --text: #0b2a5b;
+  --muted: #345c97;
+
+  --panel: #ffffff;
+  --panel-soft: #f7faff;
+  --border: #dfe8f7;
+  --border-soft: #e8f0ff;
+
+  --shadow: 0 14px 34px rgba(11,42,91,0.08);
+  --shadow-strong: 0 14px 36px rgba(11,42,91,0.10);
+
+  /* “Glow” shadows za naglašavanje kartica */
+  --glow-green: 0 14px 34px rgba(34,197,94,0.30);
+  --glow-yellow: 0 14px 34px rgba(234,179,8,0.18);
+  --glow-red: 0 14px 34px rgba(239,68,68,0.26);
+  --glow-blue: 0 14px 34px rgba(59,130,246,0.26);
+
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+
+  --pad-page: 32px;
+  --gap: 14px;
+}
+
+/* ------------------------------------------------------------
+   Global reset: full width (Vite default zna centrirati content)
+------------------------------------------------------------ */
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+body{
+  display: block;
+  place-items: initial;
+  align-items: initial;
+  justify-content: initial;
+}
+
+/* Vite “wrapper” (#root) često ima max-width: uklanjamo */
+#root{
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Button reset: da buttoni koriste isti font i boje */
+button{ font: inherit; color: inherit; }
+
+/* ------------------------------------------------------------
+   Page shell
+------------------------------------------------------------ */
+.rs-page{
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+.rs-shell{
+  width: 100%;
+  padding: 26px var(--pad-page) 64px;
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------
+   Topbar + navigation
+------------------------------------------------------------ */
+.rs-topbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.rs-brand{
+  letter-spacing:2px;
+  font-size:12px;
+  color: var(--muted);
+}
+.rs-title{
+  margin: 8px 0 6px;
+  font-size: 52px;
+  line-height: 1.02;
+}
+.rs-subtitle{
+  margin-top:6px;
+  color: var(--muted);
+}
+.rs-pill{
+  padding:10px 12px;
+  border:1px solid var(--border);
+  border-radius: 14px;
+  background: var(--panel-soft);
+  font-size:12px;
+  color: var(--muted);
+  white-space:nowrap;
+}
+
+/* Nav gumbi (Restorani / Grafovi) */
+.rs-nav{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.rs-nav-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 14px;
+  border-radius: 14px;
+  border:1px solid var(--border);
+  background: var(--panel-soft);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 800;
+}
+.rs-nav-btn.active{
+  border-color: var(--text);
+  background: #f0f6ff;
+  color: var(--text);
+}
+
+/* ------------------------------------------------------------
+   Cards (glavni building block)
+------------------------------------------------------------ */
+.rs-card{
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+.rs-card-soft{ background: var(--panel-soft); }
+.rs-card-strongshadow{ box-shadow: var(--shadow-strong); }
+
+/* glow helper classes */
+.rs-glow-green{ box-shadow: var(--glow-green); }
+.rs-glow-yellow{ box-shadow: var(--glow-yellow); }
+.rs-glow-red{ box-shadow: var(--glow-red); }
+.rs-glow-blue{ box-shadow: var(--glow-blue); }
+
+/* ------------------------------------------------------------
+   KPI grid
+------------------------------------------------------------ */
+.rs-grid-kpi{
+  margin-top: 18px;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(260px, 1fr));
+  gap: var(--gap);
+}
+.rs-kpi-title{ font-size: 12px; color: var(--muted); }
+.rs-kpi-value{ font-size: 22px; font-weight: 950; margin-top: 6px; }
+.rs-kpi-sub{ margin-top: 4px; color: var(--muted); }
+
+/* ------------------------------------------------------------
+   Section head (title + note)
+------------------------------------------------------------ */
+.rs-section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.rs-h2{
+  margin:0;
+  font-size:18px;
+  font-weight: 900;
+}
+.rs-note{
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------
+   Stack layout (koristi se na Charts stranici)
+   - Umjesto 2-col grida: sve ide 1 ispod drugog
+   - Stabilnije za Recharts ResponsiveContainer
+------------------------------------------------------------ */
+.rs-stack{
+  display:grid;
+  gap: var(--gap);
+}
+
+/* Recharts wrapperi s fiksnom visinom
+   - ResponsiveContainer treba parent koji ima definiran height
+   - Zato koristimo fixed height na wrapper div-u */
+.rs-chart-fixed{
+  margin-top: 12px;
+  height: 460px;
+  width: 100%;
+  min-width: 0;
+}
+.rs-chart-fixed-sm{
+  margin-top: 10px;
+  height: 280px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------
+   Explain box ispod scatter grafa
+------------------------------------------------------------ */
+.rs-explain{
+  margin-top:10px;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid var(--border-soft);
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.35;
+}
+.rs-explain-title{
+  font-weight: 900;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* mini stats */
+.rs-mini-grid{
+  margin-top:10px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+}
+.rs-mini{
+  padding:12px;
+  border-radius:14px;
+  border:1px solid var(--border-soft);
+  background:#fff;
+}
+.rs-mini-title{ font-size:12px; color: var(--muted); }
+.rs-mini-value{ font-size:18px; font-weight:900; margin-top:6px; color: var(--text); }
+
+/* Best value list */
+.rs-bestvalue-list{
+  margin-top: 10px;
+  display: grid;
+  gap: 8px;
+}
+.rs-bestvalue-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding: 10px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  background: var(--panel-soft);
+}
+.rs-bestvalue-name{ font-weight: 900; color: var(--text); }
+.rs-bestvalue-meta{ color: var(--muted); font-size: 13px; }
+
+/* ------------------------------------------------------------
+   Euro cards (filter)
+------------------------------------------------------------ */
+.rs-grid-euro{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: var(--gap);
+}
+.rs-euro-btn{
+  cursor:pointer;
+  padding:16px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background: #fff;
+  text-align:left;
+  color: var(--text);
+  box-shadow: var(--shadow);
+  transition: transform .08s ease, box-shadow .08s ease, background .08s ease, border-color .08s ease;
+}
+.rs-euro-btn:hover{ transform: translateY(-1px); }
+.rs-euro-btn.active{
+  border-color: var(--text);
+  background: #f0f6ff;
+}
+.rs-euro-btn.tone-green{ box-shadow: 0 14px 34px rgba(34,197,94,0.20); }
+.rs-euro-btn.tone-yellow{ box-shadow: 0 14px 34px rgba(234,179,8,0.18); }
+.rs-euro-btn.tone-red{ box-shadow: 0 14px 34px rgba(239,68,68,0.18); }
+.rs-euro-btn.active.tone-green{ box-shadow: 0 16px 40px rgba(34,197,94,0.22); }
+.rs-euro-btn.active.tone-yellow{ box-shadow: 0 16px 40px rgba(234,179,8,0.20); }
+.rs-euro-btn.active.tone-red{ box-shadow: 0 16px 40px rgba(239,68,68,0.18); }
+
+.rs-euro-label{ font-size:12px; color: var(--muted); }
+.rs-euro-value{ font-size:30px; font-weight:950; margin-top:6px; }
+.rs-euro-sub{ color: var(--muted); margin-top:6px; }
+
+/* ------------------------------------------------------------
+   Search + table
+------------------------------------------------------------ */
+.rs-search-head{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.rs-input{
+  width: 520px;
+  max-width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--panel-soft);
+  color: var(--text);
+  outline:none;
+}
+
+/* Table scroll box:
+   - max-height daje scroll unutar kartice
+   - sticky header da zaglavlje ostane vidljivo */
+.rs-table-wrap{
+  margin-top: 12px;
+  max-height: 520px;
+  overflow: auto;
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  background: #fff;
+}
+.rs-table{
+  width:100%;
+  border-collapse: collapse;
+}
+.rs-th{
+  text-align:left;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 12px;
+  color: var(--muted);
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+.rs-td{
+  padding:10px;
+  border-bottom: 1px solid #f1f6ff;
+}
+.rs-td-strong{ font-weight: 900; }
+.rs-td-muted{ color: var(--muted); }
+
+/* rank pill */
+.rs-pill-rank{
+  padding:4px 10px;
+  border-radius: 999px;
+  border:1px solid var(--border);
+  background: var(--panel-soft);
+  font-weight: 900;
+}
+.rs-pill-rank.pill-green{ border-color: #bfe9cf; background: rgba(34,197,94,0.10); }
+.rs-pill-rank.pill-yellow{ border-color: #f5e7b6; background: rgba(234,179,8,0.10); }
+.rs-pill-rank.pill-red{ border-color: #f3b6b6; background: rgba(239,68,68,0.10); }
+
+/* footer */
+.rs-footer{
+  margin-top:18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* responsive */
+@media (max-width: 1100px){
+  :root{ --pad-page: 18px; }
+  .rs-grid-kpi{ grid-template-columns: 1fr 1fr; }
+  .rs-grid-euro{ grid-template-columns: 1fr; }
+  .rs-chart-fixed{ height: 420px; }
+}
