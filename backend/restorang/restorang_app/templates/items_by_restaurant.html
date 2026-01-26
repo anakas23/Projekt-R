@@ -234,7 +234,7 @@
             loadingDiv.classList.add('show');
 
             // Fetch data
-            fetch(`/home/fetch-items-prices/?rest_id=${restaurantId}`)
+            fetch(`/api/fetch-items-prices/?rest_id=${restaurantId}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);

@@ -12,3 +12,5 @@ env/
 coverage/
 *.sqlite3
 *.db
+../venv/
+../env/

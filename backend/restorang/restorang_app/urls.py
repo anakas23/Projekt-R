@@ -10,7 +10,7 @@ urlpatterns = [
     path('restbytype/', views.fetch_all_restaurants_by_type, name="restbytype"),
     path('resttypes/', views.fetch_all_restaurant_types, name="resttypes"),
     path('restbyquater/', views.fetch_all_restaurants_by_quarter, name="restbyquarter"),
-    path('fetch-items-prices/', views.get_menu_by_rest_id, name='fetch_items_prices'),
+    path('fetch-items-prices/', views.get_menu_by_rest_id, name='get_menu_by_rest_id'),
     path('item-price-history/', views.get_item_price_history, name='item_price_history'),
     
     path('items-by-restaurant/', views.items_by_restaurant, name='items_by_restaurant'),  #for testing

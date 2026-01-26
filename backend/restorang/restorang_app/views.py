@@ -198,7 +198,6 @@ def fetch_all_restaurants_by_quarter(request):
 
 def get_menu_by_rest_id(request):
     context = None
-    print("helasdfasadsfsdf")
     try:
         restaurant_id = request.GET.get('rest_id') or request.POST.get('rest_id')
         
