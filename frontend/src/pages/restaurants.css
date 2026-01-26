@@ -1,0 +1,51 @@
+.restaurants-page {
+  padding: 32px;
+  background: #f8fbff;
+  min-height: calc(100vh - 70px);
+}
+
+.restaurants-header h1 { margin: 0; font-size: 44px; }
+.restaurants-header p { margin-top: 10px; color: #555; }
+
+.filters {
+  margin-top: 26px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 14px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.field input, .field select {
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.field input:focus, .field select:focus { border-color: #2563eb; }
+
+.count { margin-top: 18px; color: #555; }
+
+.cards-grid {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+@media (max-width: 1000px) {
+  .filters { grid-template-columns: 1fr; }
+  .cards-grid { grid-template-columns: 1fr; }
+}
