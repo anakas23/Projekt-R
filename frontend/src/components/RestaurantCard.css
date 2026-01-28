@@ -33,5 +33,13 @@
   background: #f2f4f7;
   color: #333;
 }
+.restaurant-card.clickable {
+  cursor: pointer;
+}
+
+.restaurant-card.clickable:hover {
+  transform: translateY(-2px);
+  transition: transform 0.15s ease;
+}
 
 .tag-primary { background: #e8f0ff; color: #2563eb; }

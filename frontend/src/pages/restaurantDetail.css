@@ -1,0 +1,31 @@
+.restaurant-detail-page {
+  padding: 32px;
+  background: #f8fbff;
+  min-height: calc(100vh - 70px);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: #2563eb;
+  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 16px;
+}
+
+.detail-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.detail-card h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.detail-meta {
+  margin-top: 10px;
+  color: #555;
+}
