@@ -1,0 +1,17 @@
+db.sqlite3
+../DS_Store
+myworld/
+/restorang/.env
+*.pyc
+__pycache__/
+venv/
+env/
+.idea/
+.vscode/
+*.log
+coverage/
+*.sqlite3
+*.db
+../venv/
+../env/
+.DS_Store
