@@ -1,22 +1,58 @@
-import { useMemo, useState } from "react";
-import { restaurants as data } from "../mocks/restaurants";
+import { useEffect, useMemo, useState } from "react";
 import RestaurantCard from "../components/RestaurantCard";
 import "./restaurants.css";
 
+const API_BASE = "http://localhost:8000/api";
+
 function Restaurants() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [query, setQuery] = useState("");
   const [city, setCity] = useState("Svi gradovi");
   const [type, setType] = useState("Sve vrste");
 
+  // FETCH RESTORANA S BACKENDA
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/restaurants/`);
+        if (!res.ok) throw new Error("Greška pri dohvaćanju restorana");
+
+        const json = await res.json();
+
+        //  MAPIRANJE BACKEND → FRONTEND SHAPE
+        const mapped = (json.items || []).map((r) => ({
+          id: r.rest_id,
+          name: r.name,
+          address: r.location,
+          city: r.quarter, // privremeno quarter → city
+          type: r.type,
+        }));
+
+        setData(mapped);
+      } catch (err) {
+        console.error(err);
+        setError("Ne mogu dohvatiti restorane.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRestaurants();
+  }, []);
+
+  //  FILTERI 
   const cities = useMemo(() => {
     const set = new Set(data.map((r) => r.city));
     return ["Svi gradovi", ...Array.from(set)];
-  }, []);
+  }, [data]);
 
   const types = useMemo(() => {
     const set = new Set(data.map((r) => r.type));
     return ["Sve vrste", ...Array.from(set)];
-  }, []);
+  }, [data]);
 
   const filtered = useMemo(() => {
     return data.filter((r) => {
@@ -29,13 +65,30 @@ function Restaurants() {
 
       return matchesQuery && matchesCity && matchesType;
     });
-  }, [query, city, type]);
+  }, [data, query, city, type]);
+
+  // STATES
+  if (loading) return <p>Učitavanje restorana...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="restaurants-page">
       <div className="restaurants-header">
-        <h1>Restorani i kafići</h1>
-        <p>Pregled i usporedba cijena prema različitim lokacijama</p>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h1>Restorani i kafići</h1>
+            <p>Pregled i usporedba cijena prema različitim lokacijama</p>
+          </div>
+
+          <a
+            href="https://docs.google.com/forms/d/1Hl9AXhpQfy6R63L_YUgwwvAzd_GALLl9ETFa5k7boU0/viewform?edit_requested=true"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="report-price-btn"
+          >
+            Prijavi pogrešnu cijenu
+          </a>
+        </div>
       </div>
 
       <div className="filters">
@@ -52,7 +105,9 @@ function Restaurants() {
           <label>Grad</label>
           <select value={city} onChange={(e) => setCity(e.target.value)}>
             {cities.map((c) => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c}>
+                {c}
+              </option>
             ))}
           </select>
         </div>
@@ -61,7 +116,9 @@ function Restaurants() {
           <label>Vrsta</label>
           <select value={type} onChange={(e) => setType(e.target.value)}>
             {types.map((t) => (
-              <option key={t} value={t}>{t}</option>
+              <option key={t} value={t}>
+                {t}
+              </option>
             ))}
           </select>
         </div>
