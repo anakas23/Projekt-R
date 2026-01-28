@@ -13,14 +13,26 @@ import os
 def multiply_numbers(request):
     result = ""
     context = None
+    code = 0
+    if request.method =='GET':
+        response = supabase.table('restaurant').select('*').execute()
+        code = 1
+        context = {
+                    "items": response.data or [],
+                    "code": code,
+                    "googleapi": os.getenv("GOOGLE_MAPS_API_KEY"),
+                    "error": None
+                }
     if request.method == 'POST':
         select_arg = request.POST.get('select-arg')
         select_type = request.POST.get('select-type')
         try:
             if select_type == "option1":
-                response = supabase.table('item').select('name, price(value)').ilike('name', "%"+select_arg+"%").execute()                    
+                response = supabase.table('item').select('name, price(value)').ilike('name', "%"+select_arg+"%").execute() 
+                code = 2                   
             elif select_type == "option2":
                 response = supabase.table('restaurant').select('*').ilike('name', "%"+select_arg+"%").execute()
+                code = 3
             else: 
                 response = supabase.table("price").insert({
                     "price_id": request.POST.get('insert-id'),
@@ -40,6 +52,8 @@ def multiply_numbers(request):
                     item["price"] = pricechar
                 context = {
                     "items": response.data or [],
+                    "code": code,
+                    "googleapi": os.getenv("GOOGLE_MAPS_API_KEY"),
                     "error": None
                 }
             if not response.data:
