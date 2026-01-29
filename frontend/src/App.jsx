@@ -6,6 +6,8 @@ import Restaurants from "./pages/Restaurants";
 import Compare from "./pages/Compare";
 import SubmitPrice from "./pages/SubmitPrice";
 import Admin from "./pages/Admin";
+import RestaurantDetail from "./pages/RestaurantDetail";
+
 
 export default function App() {
   return (
@@ -17,6 +19,7 @@ export default function App() {
         <Route path="/compare" element={<Compare />} />
         <Route path="/submit" element={<SubmitPrice />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/restaurants/:id" element={<RestaurantDetail />} />
       </Routes>
     </>
   );

@@ -1,78 +1,140 @@
-import { useMemo, useState } from "react";
-import { restaurants as data } from "../mocks/restaurants";
+import { useEffect, useMemo, useState } from "react";
 import RestaurantCard from "../components/RestaurantCard";
 import "./restaurants.css";
 
-export default function Restaurants() {
+const API_BASE = "http://localhost:8000/api";
+
+function Restaurants() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const [query, setQuery] = useState("");
+  const [city, setCity] = useState("Svi gradovi");
+  const [type, setType] = useState("Sve vrste");
+
+  // FETCH RESTORANA S BACKENDA
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/restaurants/`);
+        if (!res.ok) throw new Error("Greška pri dohvaćanju restorana");
+
+        const json = await res.json();
+
+        //  MAPIRANJE BACKEND → FRONTEND SHAPE
+        const mapped = (json.items || []).map((r) => ({
+          id: r.rest_id,
+          name: r.name,
+          address: r.location,
+          city: r.quarter, // privremeno quarter → city
+          type: r.type,
+        }));
+
+        setData(mapped);
+      } catch (err) {
+        console.error(err);
+        setError("Ne mogu dohvatiti restorane.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRestaurants();
+  }, []);
+
+  //  FILTERI 
+  const cities = useMemo(() => {
+    const set = new Set(data.map((r) => r.city));
+    return ["Svi gradovi", ...Array.from(set)];
+  }, [data]);
+
+  const types = useMemo(() => {
+    const set = new Set(data.map((r) => r.type));
+    return ["Sve vrste", ...Array.from(set)];
+  }, [data]);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-
     return data.filter((r) => {
-      if (!q) return true;
+      const matchesQuery =
+        r.name.toLowerCase().includes(query.toLowerCase()) ||
+        r.address.toLowerCase().includes(query.toLowerCase());
 
-      const matchesRestaurant = r.name.toLowerCase().includes(q);
+      const matchesCity = city === "Svi gradovi" ? true : r.city === city;
+      const matchesType = type === "Sve vrste" ? true : r.type === type;
 
-      const matchesItem = r.items?.some((item) =>
-        item.name.toLowerCase().includes(q)
-      );
-
-      return matchesRestaurant || matchesItem;
+      return matchesQuery && matchesCity && matchesType;
     });
-  }, [query]);
+  }, [data, query, city, type]);
+
+  // STATES
+  if (loading) return <p>Učitavanje restorana...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <div className="rsr-page">
-      <div className="rsr-shell">
-        {/* Header */}
-        <div className="rsr-topbar">
+    <div className="restaurants-page">
+      <div className="restaurants-header">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <h1 className="rsr-title">Restorani</h1>
-            <div className="rsr-subtitle">
-              Pretraživanje po jelima i restoranima
-            </div>
+            <h1>Restorani i kafići</h1>
+            <p>Pregled i usporedba cijena prema različitim lokacijama</p>
           </div>
 
-          <div className="rsr-chip">
-            Prikazano <b>{filtered.length}</b> / {data.length}
-          </div>
+          <a
+            href="https://docs.google.com/forms/d/1Hl9AXhpQfy6R63L_YUgwwvAzd_GALLl9ETFa5k7boU0/viewform?edit_requested=true"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="report-price-btn"
+          >
+            Prijavi pogrešnu cijenu
+          </a>
+        </div>
+      </div>
+
+      <div className="filters">
+        <div className="field">
+          <label>Pretraživanje</label>
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Pretraži restorane..."
+          />
         </div>
 
-        {/* Search */}
-        <div className="rsr-card rsr-search-card">
-          <div className="rsr-search-head">
-            <div>
-              <h2 className="rsr-h2">Pretraži jelovnik</h2>
-              <div className="rsr-note">
-                Npr. burger, pizza, ramen, cola…
-              </div>
-            </div>
-
-            <input
-              className="rsr-input"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Upiši naziv jela ili restorana"
-            />
-          </div>
+        <div className="field">
+          <label>Grad</label>
+          <select value={city} onChange={(e) => setCity(e.target.value)}>
+            {cities.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
         </div>
 
-        {/* Results */}
-        <div className="rsr-grid">
-          {filtered.map((r) => (
-            <div key={r.id} className="rsr-card rsr-card-hover">
-              <RestaurantCard restaurant={r} highlight={query} />
-            </div>
-          ))}
+        <div className="field">
+          <label>Vrsta</label>
+          <select value={type} onChange={(e) => setType(e.target.value)}>
+            {types.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
         </div>
+      </div>
 
-        {filtered.length === 0 && (
-          <div className="rsr-empty">
-            Nema restorana koji sadrže “{query}”.
-          </div>
-        )}
+      <div className="count">
+        Prikazano {filtered.length} od {data.length} objekata
+      </div>
+
+      <div className="cards-grid">
+        {filtered.map((r) => (
+          <RestaurantCard key={r.id} restaurant={r} />
+        ))}
       </div>
     </div>
   );
 }
+
+export default Restaurants;

@@ -28,7 +28,7 @@ function Navbar() {
             Usporedba
           </NavLink>
         </li>
-        <li>
+        {/* <li>
           <NavLink to="/submit" className={({ isActive }) => (isActive ? "active" : "")}>
             Unos cijene
           </NavLink>
@@ -37,7 +37,7 @@ function Navbar() {
           <NavLink to="/admin" className={({ isActive }) => (isActive ? "active" : "")}>
             Administrator
           </NavLink>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

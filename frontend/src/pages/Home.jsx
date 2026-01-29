@@ -25,7 +25,7 @@ export default function Home() {
 
           <p className="rh-lead">
             Pronađi gdje se najviše isplati jesti. Pregledaj cijene, usporedi kvartove i
-            prati promjene kroz vrijeme kroz grafove.
+            prati promjene kroz vrijeme grafovima.
           </p>
 
           <div className="rh-actions">
@@ -74,14 +74,15 @@ export default function Home() {
             informiranih odluka o tome gdje jesti.
           </p>
 
-          <div className="rh-about-actions">
+          {/*<div className="rh-about-actions">
             <button className="rh-btn rh-btn-soft" onClick={() => nav("/submit")}>
               Unesi cijenu
             </button>
             <button className="rh-btn rh-btn-soft" onClick={() => nav("/admin")}>
               Admin pregled
             </button>
-          </div>
+          </div> */}
+
         </section>
 
         <div className="rh-footer">RESTORANG • Zagreb</div>
