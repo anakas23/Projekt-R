@@ -62,6 +62,8 @@ MIDDLEWARE = [
 # CORS – DEV SETTING
 CORS_ALLOW_ALL_ORIGINS = True 
 
+STATIC_ROOT = BASE_DIR/'staticfiles'
+
 ROOT_URLCONF = 'restorang.urls'
 
 TEMPLATES = [

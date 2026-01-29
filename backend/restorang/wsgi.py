@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'restorang.settings')
+settings_module = "restorang.deployment_settings" if 'RENDER_EXTERNAL_HOSTNAME' in os.environ else "restorang.settings"
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
 application = get_wsgi_application()
