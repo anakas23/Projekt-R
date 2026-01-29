@@ -10,7 +10,7 @@ function Restaurants() {
   const [error, setError] = useState(null);
 
   const [query, setQuery] = useState("");
-  const [city, setCity] = useState("Svi gradovi");
+  const [city, setCity] = useState("Svi kvartovi");
   const [type, setType] = useState("Sve vrste");
 
   // FETCH RESTORANA S BACKENDA
@@ -45,9 +45,15 @@ function Restaurants() {
 
   //  FILTERI 
   const cities = useMemo(() => {
-    const set = new Set(data.map((r) => r.city));
-    return ["Svi gradovi", ...Array.from(set)];
+    const set = new Set(
+      data
+        .map((r) => r.city)
+        .filter((c) => c && c.trim() !== "")
+    );
+
+    return ["Svi kvartovi", ...Array.from(set)];
   }, [data]);
+
 
   const types = useMemo(() => {
     const set = new Set(data.map((r) => r.type));
@@ -60,7 +66,7 @@ function Restaurants() {
         r.name.toLowerCase().includes(query.toLowerCase()) ||
         r.address.toLowerCase().includes(query.toLowerCase());
 
-      const matchesCity = city === "Svi gradovi" ? true : r.city === city;
+      const matchesCity = city === "Svi kvartovi" ? true : r.city === city;
       const matchesType = type === "Sve vrste" ? true : r.type === type;
 
       return matchesQuery && matchesCity && matchesType;
@@ -102,7 +108,7 @@ function Restaurants() {
         </div>
 
         <div className="field">
-          <label>Grad</label>
+          <label>Kvart</label>
           <select value={city} onChange={(e) => setCity(e.target.value)}>
             {cities.map((c) => (
               <option key={c} value={c}>
