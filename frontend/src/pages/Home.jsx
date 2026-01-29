@@ -62,28 +62,7 @@ export default function Home() {
             />
           </div>
         </section>
-
-        {/* ABOUT */}
-        <section className="rh-about">
-          <div className="rh-section-head">
-            <h2 className="rh-h2">O projektu</h2>
-          </div>
-
-          <p className="rh-p">
-            RESTORANG je osmišljen kako bi studentima i široj zajednici pomogao u donošenju
-            informiranih odluka o tome gdje jesti.
-          </p>
-
-          {/*<div className="rh-about-actions">
-            <button className="rh-btn rh-btn-soft" onClick={() => nav("/submit")}>
-              Unesi cijenu
-            </button>
-            <button className="rh-btn rh-btn-soft" onClick={() => nav("/admin")}>
-              Admin pregled
-            </button>
-          </div> */}
-
-        </section>
+        
 
         <div className="rh-footer">RESTORANG • Zagreb</div>
       </div>
