@@ -82,8 +82,8 @@ function Restaurants() {
       <div className="restaurants-header">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div>
-            <h1>Restorani i kafići</h1>
-            <p>Pregled i usporedba cijena prema različitim lokacijama</p>
+            <h1>Restorani</h1>
+            <p>Pregled jelovnika i lokacije restorana</p>
           </div>
 
           <a
