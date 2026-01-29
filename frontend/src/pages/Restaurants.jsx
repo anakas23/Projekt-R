@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import RestaurantCard from "../components/RestaurantCard";
 import "./restaurants.css";
 
-const API_BASE = "http://localhost:8000/api";
+const isDevelopment = import.meta.env.MODE === "development";
+const API_BASE = isDevelopment ? "http://localhost:8000/api" : "https://projekt-r-lvfd.onrender.com/api";
 
 function Restaurants() {
   const [data, setData] = useState([]);

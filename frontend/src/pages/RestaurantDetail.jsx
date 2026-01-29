@@ -2,7 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./restaurantDetail.css";
 
-const API_BASE = "http://localhost:8000/api";
+const isDevelopment = import.meta.env.MODE === "development";
+const API_BASE = isDevelopment ? "http://localhost:8000/api" : "https://projekt-r-lvfd.onrender.com/api";
+
+
 const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 /* ========= LOAD GOOGLE MAPS ONCE ========= */
