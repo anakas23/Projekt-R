@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./submitPrice.css";
+import "./SubmitPrice.css";
 
 function SubmitPrice() {
   const [form, setForm] = useState({
