@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import "./restaurantDetail.css";
 
 const API_BASE = "http://localhost:8000/api";
-const GOOGLE_MAPS_KEY = "AIzaSyCm8w0TE_NGW1zbJSi_KgZ28SMYDErO6qo";
+const GOOGLE_MAPS_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
 /* ========= LOAD GOOGLE MAPS ONCE ========= */
 function loadGoogleMaps() {
