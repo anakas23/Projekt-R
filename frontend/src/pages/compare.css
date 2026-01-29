@@ -1,151 +1,569 @@
-.compare-page {
-  padding: 32px;
-  background: #f8fbff;
-  min-height: calc(100vh - 70px);
+/* ============================================================
+   RESTORANG — CSS Design System (Compare + Trend)
+   ============================================================ */
+
+:root{
+  --bg: #ffffff;
+  --text: #0b2a5b;
+  --muted: #345c97;
+
+  --panel: #ffffff;
+  --panel-soft: #f7faff;
+  --border: #dfe8f7;
+  --border-soft: #e8f0ff;
+
+  --shadow: 0 14px 34px rgba(11,42,91,0.08);
+  --shadow-strong: 0 14px 36px rgba(11,42,91,0.10);
+
+  --glow-green: 0 14px 34px rgba(34,197,94,0.30);
+  --glow-yellow: 0 14px 34px rgba(234,179,8,0.18);
+  --glow-red: 0 14px 34px rgba(239,68,68,0.26);
+  --glow-blue: 0 14px 34px rgba(59,130,246,0.26);
+
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+
+  --pad-page: 32px;
+  --gap: 14px;
 }
 
-.compare-header h1 { margin: 0; font-size: 44px; }
-.compare-header p { margin-top: 10px; color: #555; }
-
-.compare-controls {
-  margin-top: 22px;
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-}
-
-.controls-top {
-  display: grid;
-  grid-template-columns: 2fr 2fr;
-  gap: 18px;
-}
-
-.field label {
-  display: block;
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 8px;
-  font-weight: 600;
-}
-
-.field select {
+/* ------------------------------------------------------------
+   Global reset
+------------------------------------------------------------ */
+html, body {
+  height: 100%;
   width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  outline: none;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
-
-.segmented { display: flex; gap: 10px; }
-
-.seg {
-  flex: 1;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  background: #f3f4f6;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.seg.active { background: #2563eb; color: white; border-color: #2563eb; }
-
-.controls-bottom { margin-top: 18px; }
-
-.section-label {
+body{
   display: block;
+  place-items: initial;
+  align-items: initial;
+  justify-content: initial;
+}
+#root{
+  width: 100%;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+button{ font: inherit; color: inherit; }
+
+/* ------------------------------------------------------------
+   Page shell
+------------------------------------------------------------ */
+.rs-page{
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+}
+.rs-shell{
+  width: 100%;
+  padding: 30px var(--pad-page) 76px;
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------
+   Topbar + navigation
+------------------------------------------------------------ */
+.rs-topbar{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+  margin-bottom: 8px;
+}
+.rs-title{
+  margin: 8px 0 0;
+  font-size: 52px;
+  line-height: 1.02;
+}
+.rs-subtitle{
+  margin-top:10px;
+  color: var(--muted);
   font-size: 13px;
-  color: #555;
-  margin-bottom: 10px;
-  font-weight: 700;
+}
+.rs-nav{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.rs-nav-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 14px;
+  border-radius: 14px;
+  border:1px solid var(--border);
+  background: var(--panel-soft);
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .08s ease, background .08s ease, border-color .08s ease;
+}
+.rs-nav-btn:hover{ transform: translateY(-1px); }
+.rs-nav-btn.active{
+  border-color: var(--text);
+  background: #f0f6ff;
+  color: var(--text);
 }
 
-.restaurant-picks {
+/* ------------------------------------------------------------
+   Cards
+------------------------------------------------------------ */
+.rs-card{
+  padding: 16px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+.rs-card-soft{ background: var(--panel-soft); }
+.rs-card-strongshadow{ box-shadow: var(--shadow-strong); }
+
+.rs-glow-green{ box-shadow: var(--glow-green); }
+.rs-glow-yellow{ box-shadow: var(--glow-yellow); }
+.rs-glow-red{ box-shadow: var(--glow-red); }
+.rs-glow-blue{ box-shadow: var(--glow-blue); }
+
+/* ------------------------------------------------------------
+   Typography helpers
+------------------------------------------------------------ */
+.rs-section-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.rs-h2{
+  margin:0;
+  font-size:18px;
+  font-weight: 950;
+}
+.rs-note{
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------
+   Inputs (modern)
+------------------------------------------------------------ */
+.rs-input{
+  width: 520px;
+  max-width: 100%;
+  height: 44px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--panel-soft);
+  color: var(--text);
+  outline:none;
+  transition: border-color .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.rs-input:focus{
+  border-color: #93b8ff;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.12);
+  background: #fff;
+}
+select.rs-input{
+  width: 100%;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #5b7bb3 50%),
+    linear-gradient(135deg, #5b7bb3 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 18px,
+    calc(100% - 12px) 18px;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 34px;
+}
+.rs-field-label{
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+/* ------------------------------------------------------------
+   KPI grid (kvartovi analiza)
+------------------------------------------------------------ */
+.rs-grid-kpi{
+  margin-top: 20px;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(260px, 1fr));
+  gap: var(--gap);
+}
+.rs-kpi-title{ font-size: 12px; color: var(--muted); }
+.rs-kpi-value{ font-size: 22px; font-weight: 950; margin-top: 6px; }
+.rs-kpi-sub{ margin-top: 4px; color: var(--muted); }
+
+/* ------------------------------------------------------------
+   Stack layout + charts wrappers
+------------------------------------------------------------ */
+.rs-stack{
+  display:grid;
+  gap: var(--gap);
+}
+.rs-chart-fixed{
+  margin-top: 12px;
+  height: 480px;
+  width: 100%;
+  min-width: 0;
+}
+.rs-chart-fixed-sm{
+  margin-top: 10px;
+  height: 300px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* ------------------------------------------------------------
+   Euro cards (filter)
+------------------------------------------------------------ */
+.rs-grid-euro{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns: repeat(3, minmax(260px, 1fr));
+  gap: var(--gap);
+}
+.rs-euro-btn{
+  cursor:pointer;
+  padding:18px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background: #fff;
+  text-align:left;
+  color: var(--text);
+  box-shadow: var(--shadow);
+  transition: transform .08s ease, box-shadow .08s ease, background .08s ease, border-color .08s ease;
+}
+.rs-euro-btn:hover{ transform: translateY(-1px); }
+.rs-euro-btn.active{
+  border-color: var(--text);
+  background: #f0f6ff;
+}
+.rs-euro-btn.tone-green{ box-shadow: 0 14px 34px rgba(34,197,94,0.20); }
+.rs-euro-btn.tone-yellow{ box-shadow: 0 14px 34px rgba(234,179,8,0.18); }
+.rs-euro-btn.tone-red{ box-shadow: 0 14px 34px rgba(239,68,68,0.18); }
+.rs-euro-btn.active.tone-green{ box-shadow: 0 16px 40px rgba(34,197,94,0.22); }
+.rs-euro-btn.active.tone-yellow{ box-shadow: 0 16px 40px rgba(234,179,8,0.20); }
+.rs-euro-btn.active.tone-red{ box-shadow: 0 16px 40px rgba(239,68,68,0.18); }
+
+.rs-euro-label{ font-size:12px; color: var(--muted); }
+.rs-euro-value{ font-size:30px; font-weight:950; margin-top:8px; }
+.rs-euro-sub{ color: var(--muted); margin-top:8px; }
+
+/* ------------------------------------------------------------
+   Table (restaurants list)
+------------------------------------------------------------ */
+.rs-search-head{
+  display:flex;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+  align-items: flex-end;
+  margin-bottom: 8px;
+}
+.rs-table-wrap{
+  margin-top: 14px;
+  max-height: 540px;
+  overflow: auto;
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  background: #fff;
+}
+.rs-table{
+  width:100%;
+  border-collapse: collapse;
+}
+.rs-th{
+  text-align:left;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 12px;
+  color: var(--muted);
+  padding: 12px 10px;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 1;
+}
+.rs-td{
+  padding:12px 10px;
+  border-bottom: 1px solid #f1f6ff;
+}
+.rs-td-strong{ font-weight: 950; }
+.rs-td-muted{ color: var(--muted); }
+
+.rs-pill-rank{
+  padding:5px 10px;
+  border-radius: 999px;
+  border:1px solid var(--border);
+  background: var(--panel-soft);
+  font-weight: 950;
+  font-size: 12px;
+}
+.rs-pill-rank.pill-green{ border-color: #bfe9cf; background: rgba(34,197,94,0.10); }
+.rs-pill-rank.pill-yellow{ border-color: #f5e7b6; background: rgba(234,179,8,0.10); }
+.rs-pill-rank.pill-red{ border-color: #f3b6b6; background: rgba(239,68,68,0.10); }
+
+/* ------------------------------------------------------------
+   Mini stats
+------------------------------------------------------------ */
+.rs-mini-grid{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+}
+.rs-mini{
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
+  background:#fff;
+  box-shadow: 0 10px 26px rgba(11,42,91,0.06);
+}
+.rs-mini-title{ font-size:12px; color: var(--muted); font-weight: 900; }
+.rs-mini-value{ font-size:18px; font-weight:950; margin-top:8px; color: var(--text); }
+
+/* ------------------------------------------------------------
+   Best value list
+------------------------------------------------------------ */
+.rs-bestvalue-list{
+  margin-top: 12px;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: 10px;
+}
+.rs-bestvalue-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding: 12px 12px;
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+  background: var(--panel-soft);
+}
+.rs-bestvalue-name{ font-weight: 950; color: var(--text); }
+.rs-bestvalue-meta{ color: var(--muted); font-size: 13px; }
+
+/* ------------------------------------------------------------
+   Footer
+------------------------------------------------------------ */
+.rs-footer{
+  margin-top:18px;
+  color: var(--muted);
+  font-size: 12px;
 }
 
-.pick {
+/* ============================================================
+   Trend page (Search dropdown, spacing, chart panel)
+   ============================================================ */
+
+.rs-trend-card{
+  margin-top: 18px;
+  padding: 20px;
+}
+
+.rs-trend-controls{
+  margin-top: 18px;
+  display:grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 14px;
+  align-items: end;
+}
+
+.rs-trend-search{
+  position: relative;
+}
+
+.rs-search-list{
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(11,42,91,0.12);
+  overflow: hidden;
+  z-index: 20;
+}
+
+.rs-search-row{
+  width: 100%;
+  text-align: left;
+  padding: 12px 12px;
+  border: none;
+  background: #fff;
+  cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
+}
+.rs-search-row:hover{
+  background: #f3f8ff;
+}
+.rs-search-row:active{
+  background: #eaf2ff;
+}
+
+.rs-search-name{
+  font-weight: 900;
+  color: var(--text);
+  font-size: 13px;
+}
+.rs-search-hint{
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.rs-search-empty{
   padding: 12px;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  background: white;
-  cursor: pointer;
-  font-weight: 700;
-  color: #111827;
+  color: var(--muted);
+  font-size: 12px;
 }
 
-.pick.active {
-  border-color: #2563eb;
-  background: #eef4ff;
+.rs-trend-selected{
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-size: 12px;
 }
 
-.dot {
-  width: 10px;
-  height: 10px;
+.rs-trend-chart{
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 18px;
+  background: #fff;
+}
+
+/* responsive */
+@media (max-width: 1100px){
+  :root{ --pad-page: 18px; }
+  .rs-grid-kpi{ grid-template-columns: 1fr 1fr; }
+  .rs-grid-euro{ grid-template-columns: 1fr; }
+  .rs-trend-controls{ grid-template-columns: 1fr; }
+  .rs-chart-fixed{ height: 420px; }
+  .rs-chart-fixed-sm{ height: 280px; }
+}
+
+/* ============================================================
+   Trend page — premium styling (override)
+   ============================================================ */
+
+.rs-trend-card{
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-strong);
+}
+
+/* header u trend kartici */
+.rs-trend-card .rs-section-head{
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+/* controls grid: malo više zraka */
+.rs-trend-controls{
+  margin-top: 20px;
+  gap: 16px;
+}
+
+/* search input block */
+.rs-trend-search .rs-input{
+  background: #fff;
+  border-color: var(--border);
+}
+.rs-trend-search .rs-input:focus{
+  border-color: #7aa7ff;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.14), 0 16px 36px rgba(11,42,91,0.08);
+}
+
+/* dropdown lista — kao "panel" */
+.rs-search-list{
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  box-shadow: 0 18px 44px rgba(11,42,91,0.16);
+}
+
+/* row hover i “active” feeling */
+.rs-search-row{
+  padding: 13px 14px;
+}
+.rs-search-row:hover{
+  background: #eef6ff;
+}
+.rs-search-row:active{
+  background: #e3efff;
+}
+.rs-search-name{
+  font-size: 13px;
+  font-weight: 950;
+}
+.rs-search-hint{
+  padding: 6px 10px;
   border-radius: 999px;
+  border: 1px solid var(--border-soft);
+  background: #fff;
+  font-weight: 900;
 }
 
-.chart-card {
-  margin-top: 18px;
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-  overflow: hidden;
+/* selected chip ispod searcha */
+.rs-trend-selected{
+  background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 10px 24px rgba(11,42,91,0.06);
 }
 
-.chart-title {
-  padding: 18px;
-  border-bottom: 1px solid #eee;
+/* item select + period select malo “premium” */
+select.rs-input{
+  background-color: #fff;
+  border-color: var(--border);
+}
+select.rs-input:focus{
+  border-color: #7aa7ff;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.14);
 }
 
-.chart-title h2 { margin: 0; }
-.chart-title p { margin: 6px 0 0; color: #6b7280; }
-
-.chart-area { padding: 18px; height: 360px; }
-
-.latest-card {
-  margin-top: 18px;
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-  padding: 18px;
+/* mini stats na trendu da dobiju pastel glow */
+.rs-trend-card .rs-mini{
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 12px 28px rgba(11,42,91,0.07);
 }
 
-.latest-card h2 { margin: 0 0 14px; }
-
-.latest-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.latest-box {
-  border: 1px solid #eee;
-  border-radius: 14px;
+/* chart wrapper kao na grafovima */
+.rs-trend-chart{
+  border-radius: 20px;
+  border: 1px solid var(--border-soft);
+  background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+  box-shadow: 0 14px 34px rgba(11,42,91,0.09);
   padding: 16px;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-  border-left: 4px solid #3b82f6;
 }
 
-.latest-box.green { border-left-color: #10b981; }
-.latest-box.red { border-left-color: #ef4444; }
-
-.latest-name { font-weight: 800; color: #111827; }
-.latest-price { margin-top: 6px; font-size: 26px; font-weight: 900; }
-.latest-date { margin-top: 6px; color: #6b7280; }
-
-@media (max-width: 1000px) {
-  .controls-top { grid-template-columns: 1fr; }
-  .restaurant-picks { grid-template-columns: 1fr; }
-  .latest-grid { grid-template-columns: 1fr; }
+/* malo veći razmak ispod chart-a */
+.rs-trend-chart .rs-note{
+  margin-top: 12px;
 }
+
+/* mobile */
+@media (max-width: 1100px){
+  .rs-trend-chart{ padding: 14px; }
+}
+

@@ -3,81 +3,76 @@ import { restaurants as data } from "../mocks/restaurants";
 import RestaurantCard from "../components/RestaurantCard";
 import "./restaurants.css";
 
-function Restaurants() {
+export default function Restaurants() {
   const [query, setQuery] = useState("");
-  const [city, setCity] = useState("Svi gradovi");
-  const [type, setType] = useState("Sve vrste");
-
-  const cities = useMemo(() => {
-    const set = new Set(data.map((r) => r.city));
-    return ["Svi gradovi", ...Array.from(set)];
-  }, []);
-
-  const types = useMemo(() => {
-    const set = new Set(data.map((r) => r.type));
-    return ["Sve vrste", ...Array.from(set)];
-  }, []);
 
   const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+
     return data.filter((r) => {
-      const matchesQuery =
-        r.name.toLowerCase().includes(query.toLowerCase()) ||
-        r.address.toLowerCase().includes(query.toLowerCase());
+      if (!q) return true;
 
-      const matchesCity = city === "Svi gradovi" ? true : r.city === city;
-      const matchesType = type === "Sve vrste" ? true : r.type === type;
+      const matchesRestaurant = r.name.toLowerCase().includes(q);
 
-      return matchesQuery && matchesCity && matchesType;
+      const matchesItem = r.items?.some((item) =>
+        item.name.toLowerCase().includes(q)
+      );
+
+      return matchesRestaurant || matchesItem;
     });
-  }, [query, city, type]);
+  }, [query]);
 
   return (
-    <div className="restaurants-page">
-      <div className="restaurants-header">
-        <h1>Restorani i kafići</h1>
-        <p>Pregled i usporedba cijena prema različitim lokacijama</p>
-      </div>
+    <div className="rsr-page">
+      <div className="rsr-shell">
+        {/* Header */}
+        <div className="rsr-topbar">
+          <div>
+            <h1 className="rsr-title">Restorani</h1>
+            <div className="rsr-subtitle">
+              Pretraživanje po jelima i restoranima
+            </div>
+          </div>
 
-      <div className="filters">
-        <div className="field">
-          <label>Pretraživanje</label>
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Pretraži restorane..."
-          />
+          <div className="rsr-chip">
+            Prikazano <b>{filtered.length}</b> / {data.length}
+          </div>
         </div>
 
-        <div className="field">
-          <label>Grad</label>
-          <select value={city} onChange={(e) => setCity(e.target.value)}>
-            {cities.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
+        {/* Search */}
+        <div className="rsr-card rsr-search-card">
+          <div className="rsr-search-head">
+            <div>
+              <h2 className="rsr-h2">Pretraži jelovnik</h2>
+              <div className="rsr-note">
+                Npr. burger, pizza, ramen, cola…
+              </div>
+            </div>
+
+            <input
+              className="rsr-input"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Upiši naziv jela ili restorana"
+            />
+          </div>
         </div>
 
-        <div className="field">
-          <label>Vrsta</label>
-          <select value={type} onChange={(e) => setType(e.target.value)}>
-            {types.map((t) => (
-              <option key={t} value={t}>{t}</option>
-            ))}
-          </select>
+        {/* Results */}
+        <div className="rsr-grid">
+          {filtered.map((r) => (
+            <div key={r.id} className="rsr-card rsr-card-hover">
+              <RestaurantCard restaurant={r} highlight={query} />
+            </div>
+          ))}
         </div>
-      </div>
 
-      <div className="count">
-        Prikazano {filtered.length} od {data.length} objekata
-      </div>
-
-      <div className="cards-grid">
-        {filtered.map((r) => (
-          <RestaurantCard key={r.id} restaurant={r} />
-        ))}
+        {filtered.length === 0 && (
+          <div className="rsr-empty">
+            Nema restorana koji sadrže “{query}”.
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-export default Restaurants;

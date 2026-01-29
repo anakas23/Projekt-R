@@ -2,62 +2,90 @@ import FeatureCard from "../components/FeatureCard";
 import { useNavigate } from "react-router-dom";
 import "./home.css";
 
-function Home() {
+export default function Home() {
   const nav = useNavigate();
 
   return (
-    <div className="home">
-      <section className="hero">
-        <div className="hero-icon">📈</div>
+    <div className="rh-page">
+      <div className="rh-shell">
+        {/* HERO */}
+        <section className="rh-hero">
+          <div className="rh-hero-head">
+            <div className="rh-logo">
+              <div className="rh-logo-icon">📈</div>
+              <div>
+                <div className="rh-wordmark">RESTORANG</div>
+                <div className="rh-tagline">Zagreb • Usporedba cijena</div>
+              </div>
+            </div>
 
-        <h1>Usporedba cijena hrane i pića</h1>
-        <p>
-          Usporedite cijene u restoranima i kafićima. Pratite promjene cijena kroz
-          vrijeme i pronađite najbolje ponude u svojoj okolini.
-        </p>
+          </div>
 
-        <div className="hero-buttons">
-          <button className="primary" onClick={() => nav("/restaurants")}>
-            Pregled cijena
-          </button>
-          <button className="secondary" onClick={() => nav("/compare")}>
-            Usporedi restorane
-          </button>
-        </div>
-      </section>
+          <h1 className="rh-title">Usporedba cijena hrane u restoranima</h1>
 
-      <section className="features">
-        <FeatureCard
-          icon="🏪"
-          title="Usporedba cijena"
-          text="Pregled i usporedba cijena hrane i pića u različitim restoranima i kafićima."
-        />
-        <FeatureCard
-          icon="📊"
-          title="Praćenje trendova"
-          text="Praćenje promjena cijena kroz vrijeme pomoću grafova i povijesnih podataka."
-        />
-        <FeatureCard
-          icon="✅"
-          title="Podaci zajednice"
-          text="Podaci koje unose korisnici omogućuju točne i ažurne informacije za donošenje odluka."
-        />
-      </section>
+          <p className="rh-lead">
+            Pronađi gdje se najviše isplati jesti. Pregledaj cijene, usporedi kvartove i
+            prati promjene kroz vrijeme kroz grafove.
+          </p>
 
-      <section className="about">
-        <h2>O projektu</h2>
-        <p>
-          Ovo je sveučilišni projekt osmišljen kako bi studentima i široj zajednici
-          pomogao u donošenju informiranih odluka o tome gdje jesti i piti.
-        </p>
-        <p>
-          Korisnici mogu unositi nove cijene, koje administratori pregledavaju i
-          odobravaju kako bi se osigurala kvaliteta podataka. Aplikacija je neovisna
-          o backend rješenju i može se povezati s bilo kojim API-jem ili izvorom podataka.
-        </p>
-      </section>
+          <div className="rh-actions">
+            <button className="rh-btn rh-btn-primary" onClick={() => nav("/restaurants")}>
+              Pregled restorana
+            </button>
+            <button className="rh-btn rh-btn-ghost" onClick={() => nav("/compare")}>
+              Grafovi i kvartovi
+            </button>
+          </div>
+        </section>
+
+        {/* FEATURES */}
+        <section className="rh-features">
+          <div className="rh-section-head">
+            <h2 className="rh-h2">Što možeš napraviti</h2>
+          </div>
+
+          <div className="rh-grid">
+            <FeatureCard
+              icon="📍"
+              title="Pregled po restoranima"
+              text="Pretraži jelovnike i usporedi cijene po restoranima."
+            />
+            <FeatureCard
+              icon="📊"
+              title="Grafovi i trendovi"
+              text="Vizualizacije po kvartovima i analitika trendova cijena."
+            />
+            <FeatureCard
+              icon="✅"
+              title="Provjereni unosi"
+              text="Cijene se pregledavaju i odobravaju prije objave radi kvalitete podataka."
+            />
+          </div>
+        </section>
+
+        {/* ABOUT */}
+        <section className="rh-about">
+          <div className="rh-section-head">
+            <h2 className="rh-h2">O projektu</h2>
+          </div>
+
+          <p className="rh-p">
+            RESTORANG je osmišljen kako bi studentima i široj zajednici pomogao u donošenju
+            informiranih odluka o tome gdje jesti.
+          </p>
+
+          <div className="rh-about-actions">
+            <button className="rh-btn rh-btn-soft" onClick={() => nav("/submit")}>
+              Unesi cijenu
+            </button>
+            <button className="rh-btn rh-btn-soft" onClick={() => nav("/admin")}>
+              Admin pregled
+            </button>
+          </div>
+        </section>
+
+        <div className="rh-footer">RESTORANG • Zagreb</div>
+      </div>
     </div>
   );
 }
-
-export default Home;

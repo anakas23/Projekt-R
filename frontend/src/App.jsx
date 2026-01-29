@@ -7,7 +7,7 @@ import Compare from "./pages/Compare";
 import SubmitPrice from "./pages/SubmitPrice";
 import Admin from "./pages/Admin";
 
-function App() {
+export default function App() {
   return (
     <>
       <Navbar />
@@ -21,5 +21,3 @@ function App() {
     </>
   );
 }
-
-export default App;

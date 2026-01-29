@@ -6,7 +6,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="logo">
         <span className="logo-icon">📈</span>
-        <span className="logo-text">Restorang</span>
+        <span className="logo-text">RestoRang</span>
       </div>
 
       <ul className="nav-links">

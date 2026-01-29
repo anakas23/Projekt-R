@@ -1,51 +1,174 @@
-.restaurants-page {
-  padding: 32px;
-  background: #f8fbff;
-  min-height: calc(100vh - 70px);
+
+:root{
+  --bg: #ffffff;
+  --text: #0b2a5b;
+  --muted: #345c97;
+
+  --panel: #ffffff;
+  --panel-soft: #f7faff;
+  --border: #dfe8f7;
+  --border-soft: #e8f0ff;
+
+  --shadow: 0 14px 34px rgba(11,42,91,0.08);
+  --shadow-strong: 0 18px 44px rgba(11,42,91,0.12);
+
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+
+  --pad-page: 32px;
+  --gap: 18px;
 }
 
-.restaurants-header h1 { margin: 0; font-size: 44px; }
-.restaurants-header p { margin-top: 10px; color: #555; }
-
-.filters {
-  margin-top: 26px;
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 14px;
-  padding: 18px;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 16px;
-}
-
-.field label {
-  display: block;
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 8px;
-  font-weight: 600;
-}
-
-.field input, .field select {
+/* Page */
+.rsr-page{
   width: 100%;
-  padding: 12px 12px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+  min-height: calc(100vh - 70px);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.rsr-shell{
+  width: 100%;
+  padding: 34px var(--pad-page) 80px;
+  box-sizing: border-box;
+}
+
+/* Header / Topbar */
+.rsr-topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-bottom: 34px; /* veći razmak do searcha */
+}
+
+.rsr-brand{
+  letter-spacing: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.rsr-title{
+  margin: 10px 0 8px;
+  font-size: 56px;
+  line-height: 1.02;
+}
+
+.rsr-subtitle{
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Count chip */
+.rsr-chip{
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+}
+
+/* Card shell */
+.rsr-card{
+  padding: 18px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+
+.rsr-card-soft{
+  background: var(--panel-soft);
+}
+
+/* hover effect for restaurant cards */
+.rsr-card-hover{
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.rsr-card-hover:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-strong);
+  border-color: #cfe0ff;
+  background: #ffffff;
+}
+
+/* Search section */
+.rsr-search-card{
+  margin-top: 0;       /* topbar već ima margin-bottom */
+  margin-bottom: 34px; /* VEĆI razmak do liste kartica */
+}
+
+.rsr-search-head{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  flex-wrap:wrap;
+  align-items:flex-end;
+}
+
+.rsr-h2{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 950;
+  letter-spacing: 0.2px;
+}
+
+.rsr-note{
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* Search input */
+.rsr-input{
+  width: 560px;
+  max-width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  color: var(--text);
   outline: none;
 }
 
-.field input:focus, .field select:focus { border-color: #2563eb; }
-
-.count { margin-top: 18px; color: #555; }
-
-.cards-grid {
-  margin-top: 18px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+.rsr-input::placeholder{
+  color: rgba(52,92,151,0.65);
 }
 
-@media (max-width: 1000px) {
-  .filters { grid-template-columns: 1fr; }
-  .cards-grid { grid-template-columns: 1fr; }
+.rsr-input:focus{
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.12);
+}
+
+/* Grid of restaurants */
+.rsr-grid{
+  margin-top: 0; /* jer search-card već daje margin-bottom */
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
+}
+
+/* Empty state */
+.rsr-empty{
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border-soft);
+  background: var(--panel-soft);
+  color: var(--muted);
+}
+
+/* Responsive */
+@media (max-width: 1100px){
+  :root{ --pad-page: 18px; }
+  .rsr-grid{ grid-template-columns: 1fr; }
+  .rsr-title{ font-size: 42px; }
+  .rsr-shell{ padding: 28px var(--pad-page) 70px; }
 }
